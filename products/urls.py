@@ -10,7 +10,7 @@ urlpatterns = [
     path('cupon-apply/', views.cupon_apply, name='cupon_apply'),
     path('add-product-review/', views.add_product_review_and_rating, name='add_product_review_and_rating'),
     path('save-shipping-address/', views.save_shipping_address, name='save_shipping_address'),
-    path('payments/', include('payments.urls', namespace='payments')), 
+    path('payments/', include('payments.urls')), 
     path('payment-details/',views.display_payment_details, name='display_payment_details'),
     #  path('download-bill/<int:order_id>/', views.download_bill, name='download_bill'),
     path('download-e-bill/', views.download_e_bill, name='download_e_bill'),
