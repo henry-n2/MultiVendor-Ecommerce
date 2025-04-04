@@ -1,0 +1,202 @@
+{% comment %} {% extends "baseFiles/base.html" %} {% endcomment %}
+{% include "baseFiles/base.html" %}
+{% load static %}
+
+{% block header-style %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    /* Space between header and product section */
+    .product-details {
+        margin-top: 50px;
+    }
+
+    /* Main Product Image Container */
+    .product__details-nav-thumb {
+        width: 100%;
+        max-width: 500px;
+        height: auto;
+        overflow: hidden;
+        position: relative;
+    }
+
+    /* Main Product Image */
+    .product__details-nav-thumb img {
+        width: 100%;
+        height: auto;
+        max-height: 500px;
+        object-fit: contain;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    /* Zoom effect on hover */
+    .product__details-nav-thumb:hover img {
+        transform: scale(1.5);
+        cursor: zoom-in;
+    }
+
+    /* Thumbnail Images */
+    .product__details-nav ul.nav-tabs img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border: 1px solid #ddd;
+        padding: 5px;
+        transition: transform 0.2s ease-in-out;
+    }
+
+    /* Thumbnail Zoom Effect */
+    .product__details-nav ul.nav-tabs img:hover {
+        transform: scale(1.1);
+        border-color: #000;
+    }
+
+</style>
+{% endblock header-style %}
+
+{% block bodycontent %}
+
+<!-- breadcrumb__area-start -->
+<section class="breadcrumb__area box-plr-75">
+    <div class="container">
+        {% include 'baseFiles/messages.html' %}
+    </div>
+</section>
+<!-- breadcrumb__area-end -->
+
+<!-- product-details-start -->
+<div class="product-details">
+    <div class="container">
+        <div class="row">
+            <!-- Product Images -->
+            <div class="col-xl-6">
+                <div class="product__details-nav d-sm-flex align-items-start">
+                    <ul class="nav nav-tabs flex-sm-column justify-content-between mr-30" id="productThumbTab" role="tablist">
+                        {% for pdimg in product.productimage_set.all %}
+                        <li class="nav-item pr-5" role="presentation">
+                            <button class="nav-link" id="thumb{{ pdimg.id }}-tab" data-bs-toggle="tab" data-bs-target="#thumb{{ pdimg.id }}" type="button" role="tab" aria-controls="thumb{{ pdimg.id }}" aria-selected="true">
+                                <img src="{{ pdimg.image.url }}" alt="">
+                            </button>
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                    <div class="product__details-thumb">
+                        <div class="tab-content" id="productThumbContent">
+                            <div class="tab-pane fade show active text-center" id="thumb" role="tabpanel" aria-labelledby="thumb-tab">
+                                <div class="product__details-nav-thumb">
+                                    <img src="{{ product.productimage_set.first.image.url }}" alt="">
+                                </div>
+                            </div>
+
+                            {% for pdimg in product.productimage_set.all %}
+                            <div class="tab-pane fade text-center" id="thumb{{ pdimg.id }}" role="tabpanel" aria-labelledby="thumb{{ pdimg.id }}-tab">
+                                <div class="product__details-nav-thumb">
+                                    <img src="{{ pdimg.image.url }}" alt="">
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Details -->
+            <div class="col-xl-6">
+                <div class="product__details-content">
+                    <h6>{{ product.title }}</h6>
+
+                    <div class="pd-rating mb-10">
+                        <ul class="rating">
+                            <li><a href="#"><i class="fal fa-star"></i></a></li>
+                            <li><a href="#"><i class="fal fa-star"></i></a></li>
+                            <li><a href="#"><i class="fal fa-star"></i></a></li>
+                            <li><a href="#"><i class="fal fa-star"></i></a></li>
+                            <li><a href="#"><i class="fal fa-star"></i></a></li>
+                        </ul>
+                        <span>({{ product_reviews.count }})</span>
+                        <span><a href="#">Add your review</a></span>
+                    </div>
+
+                    <div class="price mb-10">
+                        <span>₹{{ product.discounted_price }}</span>
+                    </div>
+
+                    <div class="features-des mb-20 mt-10">
+                        <ul>
+                            <li><i class="fas fa-circle"></i> {{ product.description|safe }}</li>
+                        </ul>
+                    </div>
+
+                    <div class="product-stock mb-20">
+                        <h5>Availability: <span> {{ product.stoc }}</span></h5>
+                    </div>
+
+                    <div class="cart-option mb-15">
+                        <a href="{% url 'add_to_cart' product.id %}" class="cart-btn">Add to Cart</a>
+                    </div>
+
+                    <div class="product-tag-area mt-15">
+                        <div class="product_info">
+                            <span class="sku_wrapper">
+                                <span class="title">Model:</span>
+                                <span class="sku">{{ product.model }}</span>
+                            </span>
+                            <span class="posted_in">
+                                <span class="title">Categories:</span>
+                                <a href="#">{{ product.categories }}</a>
+                            </span>
+                            <span class="tagged_as">
+                                <span class="title">Tags:</span>
+                                <a href="#">{{ product.tag }}</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
+</div>
+<!-- product-details-end -->
+
+<!-- product-details-description-start -->
+<div class="product-details-des mt-40 mb-60">
+    <div class="container">
+        <div class="product__details-des-tab">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#des">Description</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#review">Reviews ({{ product_reviews.count }})</button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="des">
+                <div class="product__details-des-wrapper">
+                    {{ product.details_description|safe }}
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="review">
+                <div class="product__details-review">
+                    <h6>{{ product_reviews.count }} reviews for "{{ product.title }}"</h6>
+                    {% for review in product_reviews %}
+                        <div class="review-details-content">
+                            <h6>{{ review.user.first_name }} – <span>{{ review.created_at }}</span></h6>
+                            <p>{{ review.review_message }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- product-details-description-end -->
+{% include "footer.html" %}
+{% endblock bodycontent %}
+
+{% block staticfiles_js %}
+<script src="{% static 'customjs/product-rating-review.js' %}"></script>
+{% endblock staticfiles_js %}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cart Bill - EcoGridAI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .header h2 {
+            margin: 0;
+            color: #006600;
+        }
+        .header p {
+            font-size: 18px;
+            color: #444;
+        }
+        .bill-info {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+        .qr-code {
+            text-align: right;
+            margin: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #444;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #006600;
+            color: #fff;
+        }
+        .total {
+            font-weight: bold;
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>EcoGridAI</h2>
+        <p>Eco-friendly e-commerce solutions</p>
+    </div>
+    <div class="bill-info">
+        <p>Customer: {{ user.first_name }} {{ user.last_name }}</p>
+        <p>Date: {{ now|date:"d M Y" }}</p>
+    </div>
+    <div class="qr-code">
+        <img src="data:image/png;base64,{{ qr_data|safe }}" alt="QR Code" width="100" height="100">
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cart in cart_items %}
+            <tr>
+                <td>{{ cart.product.title }}</td>
+                <td>{{ cart.quantity }}</td>
+                <td>₹{{ cart.product.discounted_price }}</td>
+                <td>₹{{ cart.total_product_price }}</td>
+            </tr>
+            {% endfor %}
+            <tr class="total">
+                <td colspan="3">Total Amount</td>
+                <td>₹{{ cart_items|map:'total_product_price'|sum }}</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

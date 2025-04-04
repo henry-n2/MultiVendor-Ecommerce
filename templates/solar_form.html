@@ -1,0 +1,211 @@
+{% comment %} <!DOCTYPE html>
+<html>
+<head>
+    {% include "header.html" %}
+    {% include "navbar.html" %} {% endcomment %}
+    {% comment %} <title>Solar System Estimator</title> {% endcomment %}
+{% comment %} </head>
+<body>
+    <div>
+        <h1>Solar System Estimator</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Calculate</button>
+    </form>
+
+    {% if result %}
+        <h2>Results:</h2>
+        <p>City: {{ result.city }}</p>
+        <p>State: {{ result.state }}</p>
+        <p>Latitude: {{ result.latitude }}</p>
+        <p>Best Panel Type: {{ result.best_panel }}</p>
+        <p>Best Mounting System: {{ result.best_mount }}</p>
+        <p>Total Panels Needed: {{ result.total_panels }}</p>
+        <p>Total Cost: INR {{ result.total_cost }}</p>
+        <p>Payback Period: {{ result.payback_period }} years</p>
+    {% endif %}
+    </div>
+</body>
+</html> {% endcomment %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% comment %} {% include "header.html" %}
+    {% include "navbar.html" %} {% endcomment %}
+    {% include "baseFiles/base.html" %}
+    <style>
+        .contain{
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fa;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        form {
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        
+        form p {
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        label {
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0 20px 0;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        form button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        form button:hover {
+            background-color: #2980b9;
+        }
+
+        .result {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            margin-top: 30px;
+        }
+
+        .result h2 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+        }
+
+        .result p {
+            font-size: 1rem;
+            color: #555;
+            margin: 8px 0;
+        }
+
+        .result p span {
+            font-weight: bold;
+        }
+          .button-54 {
+                font-family: "Open Sans", sans-serif;
+                font-size: 16px;
+                letter-spacing: 2px;
+                text-decoration: none;
+                text-transform: uppercase;
+                color: #000;
+                cursor: pointer;
+                border: 3px solid;
+                padding: 0.25em 0.5em;
+                box-shadow: 1px 1px 0px 0px, 2px 2px 0px 0px, 3px 3px 0px 0px, 4px 4px 0px 0px, 5px 5px 0px 0px;
+                position: relative;
+                user-select: none;
+                -webkit-user-select: none;
+                touch-action: manipulation;
+                
+              }
+              
+              .button-54:active {
+                box-shadow: 0px 0px 0px 0px;
+                top: 5px;
+                left: 5px;
+              }
+              
+              @media (min-width: 768px) {
+                .button-54 {
+                  padding: 0.25em 0.75em;
+                }
+              }
+    </style>
+    <title>Cost Estimator</title>
+</head>
+<body>
+    <div class="contain">
+        <h1>Cost Estimator</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Calculate</button>
+        </form>
+
+        {% if result %}
+        <div class="result">
+            <h2>Results:</h2>
+            <p><span>City:</span> {{ result.city }}</p>
+            <p><span>State:</span> {{ result.state }}</p>
+            <p><span>Latitude:</span> {{ result.latitude }}</p>
+            <p><span>Best Panel Type:</span> {{ result.best_panel }}</p>
+            <p><span>Best Mounting System:</span> {{ result.best_mount }}</p>
+            <p><span>Total Panels Needed:</span> {{ result.total_panels }}</p>
+            <p><span>Total Cost:</span> INR {{ result.total_cost }}</p>
+            <p><span>Payback Period:</span> {{ result.payback_period }} years</p>
+            {% comment %} <a href={% url "shop" %}><button class="button-54" role="button" >View Products</button></a> {% endcomment %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src={% static 'lib/wow/wow.min.js' %}></script>
+    <script src={% static "lib/easing/easing.min.js" %}></script>
+    <script src={% static "lib/waypoints/waypoints.min.js" %}></script>
+    <script src={% static "lib/owlcarousel/owl.carousel.min.js" %}></script>
+<script src={% static "js/main.js" %}></script>
+</html>
+
+
+
+
+

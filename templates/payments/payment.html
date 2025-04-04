@@ -1,0 +1,84 @@
+{% comment %} {% extends "baseFiles/base.html" %} {% endcomment %}
+{% include 'baseFiles/base.html' %}
+{% load static %}
+
+
+{% block header-style %}
+<link rel="stylesheet" href="{% static 'customcss/style.css' %}" />
+{% endblock header-style %}
+    
+
+{% block bodycontent %}
+    
+<div class="container">
+    <div class="row mt-30 mb-30">
+
+        <div class="col-6 products-details">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                       <tr> 
+                          <th class="cart-product-name">Product</th>
+                          <th class="product-price">Unit Price</th>
+                          <th class="product-quantity">Quantity</th>
+                       </tr>
+                    </thead>
+                    <tbody>
+                        
+                        {% if cart_products %}   
+                        {% for product in cart_products %}
+    
+                       <tr>
+                          <td class="product-name"><a href="#">{{ product.product.title }}</a></td>
+                          <td class="product-price"><span class="amount">₹{{ product.product.discounted_price }}</span></td>
+                          <td class="product-quantity">
+                                <div class="d-inline-flex">
+                                    <p class="mx-2 cart-quantity">{{ product.quantity }}</p>                                    
+                                </div>
+                          </td>
+                       </tr>
+                       {% endfor %}
+                       <tr><td class="fw-bold">Payable: ₹{{ payable | floatformat:2 }}</td></tr>
+                       {% endif %}
+                    </tbody>
+              </table>
+            </div>   
+        </div>
+
+        <div class="col-6 making-payment">
+            <div>
+                <p class='h3 mb-3'>Enter your Transaction Details</p>
+            </div>
+            <!-- Display a payment form -->
+            <form action="{% url 'payments:process_payment' %}" method="POST" id="payment-form"> 
+                {% csrf_token %}
+        
+                <!-- Displaying the QR Code -->
+                <div>
+                    <img src="{% static 'qr_code.png' %}" alt="QR Code" class="mb-3" width="250">
+                </div>
+        
+                <!-- Transaction ID Input -->
+                <div class="mb-3">
+                    <label for="transaction-id" class="form-label">Enter Transaction ID</label>
+                    <input type="text" name="transaction_id" id="transaction-id" class="form-control" required>
+                </div>
+        
+                <!-- Download Bill Button -->
+                <div class="mb-3">
+                    <a href="{% url 'download_e_bill' %}" class="btn btn-primary mb-3">Download Bill as PDF</a>
+                </div>
+        
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-success">Done</button>
+            </form>
+        </div>
+        
+
+{% endblock bodycontent %}
+
+
+{% block staticfiles_js %}
+<script src="https://js.stripe.com/v3/"></script>
+<script src="{% static 'customjs/strip.js' %}"></script>
+{% endblock staticfiles_js %}

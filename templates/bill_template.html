@@ -1,0 +1,79 @@
+{% comment %} 
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invoice</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 8px; text-align: left; border-bottom: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <h1>EcoGRIDAI</h1>
+    <p>Trade license Number:0917P1010325263747 </p>
+    <p>Customer Name: {{ customer_name }}</p>
+    <p>Address: {{ address }}</p>
+    <p>Total: ₹{{ total }}</p>
+    
+    <h3>Scan to Pay</h3>
+    <img src="{% static 'qr_code.png' %}" alt="QR Code" width="200">
+</body>
+</html> {% endcomment %}
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invoice</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        .container { padding: 20px; max-width: 800px; margin: auto; border: 1px solid #ddd; }
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h1 { margin: 0; }
+        .header p { margin: 0; }
+        .qr-code { text-align: center; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        table th, table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>EcoGridAI</h1>
+            <p>GST Number: 1234567890ABC</p>
+            <p>Transaction ID: {{ transaction_id }}</p>
+            <p>Customer Name: {{ customer_name }}</p>
+            <p>Address: {{ address }}</p>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Image</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in ordered_products %}
+                <tr>
+                    <td>{{ product.name }}</td>
+                    <td><img src="{{ product.image }}" width="100" height="100"></td>
+                    <td>{{ product.quantity }}</td>
+                    <td>{{ product.price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Total: ₹{{ total }}</h2>
+
+        <div class="qr-code">
+            <img src="{{ % static 'qr_code.png' % }}" alt="QR Code" width="150" height="150">
+        </div>
+    </div>
+</body>
+</html>

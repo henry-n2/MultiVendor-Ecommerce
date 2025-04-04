@@ -1,0 +1,296 @@
+{% comment %} {% extends "baseFiles/base.html" %}
+{% load static %}
+
+{% block header-style %}
+  <style>
+    body {
+      background: #eaeaea;
+      margin-top: 20px;
+    }
+    .profile-header {
+      position: relative;
+      overflow: hidden;
+    }
+    .profile-header .profile-header-cover {
+      background-size: cover;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
+    .profile-header .profile-header-cover:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0.25) 0, rgba(0, 0, 0, 0.85) 100%);
+    }
+    .profile-header .profile-header-img {
+      float: left;
+      width: 120px;
+      height: 120px;
+      overflow: hidden;
+      margin: 20px;
+      border-radius: 10px;
+      background: white;
+    }
+    .profile-header-info {
+      color: white;
+      padding: 20px;
+    }
+    .product__item img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .product__thumb {
+      position: relative;
+    }
+    .product__offer {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: red;
+      color: white;
+      padding: 5px;
+      border-radius: 5px;
+    }
+  </style>
+{% endblock header-style %}
+
+{% block bodycontent %}
+<div class="container">
+  <div id="content" class="content p-0 mt-5 mb-5">
+    <div class="profile-header">
+      <div class="profile-header-cover">
+        {% if vendor_store_obj.cover_photo %}
+          <img src="{{ vendor_store_obj.cover_photo.url }}" alt="" />
+        {% else %}
+          <img src="https://bootdey.com/img/Content/bg1.jpg" alt="" />
+        {% endif %}
+      </div>
+
+      <div class="profile-header-content">
+        {% if vendor_store_obj.logo %}
+          <div class="profile-header-img">
+            <img src="{{ vendor_store_obj.logo.url }}" alt="" />
+          </div>
+        {% else %}
+          <div class="profile-header-img">
+            <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="" />
+          </div>
+        {% endif %}
+
+        <div class="profile-header-info">
+          <h4>{{ vendor_store_obj.name }}</h4>
+          <a href="#" class="btn btn-xs btn-info mb-4">Edit Profile</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="trending-product-area light-bg-s pt-25 pb-15">
+  <div class="container custom-conatiner">
+    {% include 'baseFiles/messages.html' %}
+    <div class="section__head d-flex justify-content-between mb-30">
+      {% if vendor_store_products %}
+        <div class="section__title section__title-2">
+          <h5 class="st-titile">Showing {{ vendor_store_obj.name }} Store Products</h5>
+        </div>
+      {% else %}
+        <div class="section__title section__title-2">
+          <h5 class="st-titile">No Products Found</h5>
+        </div>
+      {% endif %}
+      
+      <div class="button-wrap button-wrap-2">
+        <a href="{% url 'home' %}">See All Product <i class="fal fa-chevron-right"></i></a>
+      </div>
+    </div>
+    
+    <div class="row">
+      {% for product in vendor_store_products %}
+        <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 col-xxl-2">
+          <div class="product__item product__item-2 b-radius-2 mb-20">
+            <div class="product__thumb fix">
+              <div class="product-image w-img">
+                <a href="{% url 'product_details' product.slug %}">
+                  <img src="{{ product.productimage_set.first.image.url }}" alt="product" />
+                </a>
+              </div>
+              <div class="product__offer">
+                <span class="discount">-{{ product.discounted_price }}%</span>
+              </div>
+              <div class="product-action product-action-2">
+                <a href="#" class="icon-box icon-box-1">
+                  <i class="fal fa-eye"></i>
+                </a>
+                <a href="#" class="icon-box icon-box-1">
+                  <i class="fal fa-heart"></i>
+                </a>
+                <a href="#" class="icon-box icon-box-1">
+                  <i class="fal fa-layer-group"></i>
+                </a>
+              </div>
+            </div>
+            <div class="product__content product__content-2">
+              <h6>
+                <a href="{% url 'product_details' product.slug %}">{{ product.title|truncatewords:5 }}</a>
+              </h6>
+              <div class="rating mb-5 mt-10">
+                <ul>
+                  <li><a href="#"><i class="fal fa-star"></i></a></li>
+                  <li><a href="#"><i class="fal fa-star"></i></a></li>
+                  <li><a href="#"><i class="fal fa-star"></i></a></li>
+                  <li><a href="#"><i class="fal fa-star"></i></a></li>
+                  <li><a href="#"><i class="fal fa-star"></i></a></li>
+                </ul>
+                <span>(01 review)</span>
+              </div>
+              <div class="price">
+                <span>₹{{ product.regular_price }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock bodycontent %} {% endcomment %}
+{% include "baseFiles/base.html" %}
+{% load static %}
+
+{% block header-style %}
+  <style>
+    body {
+      background: #eaeaea;
+      margin-top: 20px;
+    }
+    .profile-header {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .profile-header-cover img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 10px 10px 0 0;
+    }
+    .profile-header-img img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 3px solid white;
+      margin-top: -60px;
+      background: white;
+    }
+    .profile-header-info {
+      padding: 20px;
+    }
+    .product__item img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .product__offer {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: red;
+      color: white;
+      padding: 5px;
+      border-radius: 5px;
+    }
+  </style>
+{% endblock header-style %}
+
+{% block bodycontent %}
+<div class="container">
+  <div id="content" class="content p-0 mt-5 mb-5">
+    <div class="profile-header">
+      <div class="profile-header-cover">
+        {% if vendor_store_obj.cover_photo %}
+          <img src="{{ vendor_store_obj.cover_photo.url }}" alt="Cover Photo" />
+        {% else %}
+          <img src="{% static 'images/default_cover.jpg' %}" alt="Cover Photo" />
+        {% endif %}
+      </div>
+
+      <div class="profile-header-content text-center mt-3">
+        <div class="profile-header-img">
+          {% if vendor_store_obj.logo %}
+            <img src="{{ vendor_store_obj.logo.url }}" alt="Store Logo" />
+          {% else %}
+            <img src="{% static 'images/default_logo.png' %}" alt="Store Logo" />
+          {% endif %}
+        </div>
+
+        <div class="profile-header-info">
+          <h4>{{ vendor_store_obj.name }}</h4>
+          <a href="#" class="btn btn-info mb-4">Edit Profile</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="trending-product-area light-bg-s pt-25 pb-15">
+  <div class="container custom-conatiner">
+    {% include 'baseFiles/messages.html' %}
+    <div class="section__head d-flex justify-content-between mb-30">
+      {% if vendor_store_products %}
+        <div class="section__title section__title-2">
+          <h5 class="st-titile">Showing {{ vendor_store_obj.name }} Store Products</h5>
+        </div>
+      {% else %}
+        <div class="section__title section__title-2">
+          <h5 class="st-titile">No Products Found</h5>
+        </div>
+      {% endif %}
+      
+      <div class="button-wrap button-wrap-2">
+        <a href="{% url 'home' %}">See All Products <i class="fal fa-chevron-right"></i></a>
+      </div>
+    </div>
+    
+    <div class="row">
+      {% for product in vendor_store_products %}
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+          <div class="product__item product__item-2 b-radius-2">
+            <div class="product__thumb position-relative">
+              <a href="{% url 'product_details' product.slug %}">
+                <img src="{{ product.productimage_set.first.image.url }}" alt="product" />
+              </a>
+              <div class="product__offer">
+                <span>-{{ product.discounted_price }}%</span>
+              </div>
+            </div>
+            <div class="product__content product__content-2 text-center mt-3">
+              <h6>
+                <a href="{% url 'product_details' product.slug %}">{{ product.title|truncatewords:5 }}</a>
+              </h6>
+              <div class="rating mb-2">
+                <span>★★★★★</span>
+                <span>(01 review)</span>
+              </div>
+              <div class="price">
+                <span>₹{{ product.regular_price }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock bodycontent %}

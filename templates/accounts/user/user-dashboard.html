@@ -1,0 +1,35 @@
+{% extends "accounts/user/dashboard-base.html" %}
+
+
+{% block dashboard-content %}
+<div class="container mt-10">
+    <div class="oder-detals">
+        <h1>Oder History:-</h1>
+        <hr>
+    </div>
+{% include 'baseFiles/messages.html' %}
+{% include 'products/OderSummary.html' %}
+</div>
+{% load static %}
+<script src="{% static 'assets/js/vendor/jquery.js' %}"></script>
+<script src="{% static 'assets/js/vendor/waypoints.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap-bundle.js' %}"></script>
+<script src="{% static 'assets/js/meanmenu.js' %}"></script>
+<script src="{% static 'assets/js/swiper-bundle.js' %}"></script>
+<script src="{% static 'assets/js/tweenmax.js' %}"></script>
+<script src="{% static 'assets/js/owl-carousel.js' %}"></script>
+<script src="{% static 'assets/js/magnific-popup.js' %}"></script>
+<script src="{% static 'assets/js/parallax.js' %}"></script>
+<script src="{% static 'assets/js/backtotop.js' %}"></script>
+<script src="{% static 'assets/js/nice-select.js' %}"></script>
+<script src="{% static 'assets/js/countdown.min.js' %}"></script>
+<script src="{% static 'assets/js/counterup.js' %}"></script>
+<script src="{% static 'assets/js/ui-slider-range.js' %}"></script>
+<script src="{% static 'assets/js/wow.js' %}"></script>
+<script src="{% static 'assets/js/isotope-pkgd.js' %}"></script>
+<script src="{% static 'assets/js/imagesloaded-pkgd.js' %}"></script>
+<script src="{% static 'assets/js/ajax-form.js' %}"></script>
+<script src="{% static 'assets/js/main.js' %}"></script>
+
+{% endblock dashboard-content %}
+    
