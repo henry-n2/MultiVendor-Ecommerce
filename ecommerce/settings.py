@@ -35,7 +35,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 
 # ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = ['multivendor-ecommerce-j8lb.onrender.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['multivendor-ecommerce-j8lb.onrender.com', '127.0.0.1', 'localhost','*']
 
 # Application definition
 
