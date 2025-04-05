@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure-!bp990y8wp4pt^hm^5%$68jvn@9+@9^_z8(7e+2=lyob9fz!z%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-
+CSRF_TRUSTED_ORIGINS = [
+    "https://multivendor-ecommerce-j8lb.onrender.com",
+]
 
 
 
