@@ -20,19 +20,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!bp990y8wp4pt^hm^5%$68jvn@9+@9^_z8(7e+2=lyob9fz!z%'
-# SECRET_KEY = os.environ.get("SECRET_KEY")
+# SECRET_KEY = 'django-insecure-!bp990y8wp4pt^hm^5%$68jvn@9+@9^_z8(7e+2=lyob9fz!z%'
+
+SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = os.environ.get("DJANGO_DEBUG", "False") == "True"
 
 CSRF_TRUSTED_ORIGINS = [
     "https://multivendor-ecommerce-j8lb.onrender.com",
+    "http://localhost:8000",
 ]
 
 
 
-ALLOWED_HOSTS = ['*']
-
+# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['multivendor-ecommerce-j8lb.onrender.com', '127.0.0.1', 'localhost']
 
 # Application definition
 
