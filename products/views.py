@@ -219,11 +219,76 @@ def show_cart(request):
 #     return JsonResponse(data)
 
 
+# @login_required(login_url="user_login")
+# @csrf_exempt
+# def increase_cart(request):
+#     products_list = []
+
+#     if request.method == "POST":
+#         data = json.loads(request.body)
+#         cart_id = int(data['id'])
+#         action = int(data['values'])
+
+#         try:
+#             cart_item = Cart.objects.get(id=cart_id, user=request.user)
+#         except Cart.DoesNotExist:
+#             return JsonResponse({'error': 'Cart item not found'}, status=404)
+
+#         product_quantity = cart_item.quantity
+#         total_product_price = cart_item.total_product_price
+
+#         # Handle actions
+#         if action == 1 and cart_item.quantity < 50:
+#             cart_item.quantity += 1
+#             cart_item.save()
+#             product_quantity = cart_item.quantity
+#             total_product_price = cart_item.total_product_price
+
+#         elif action == 2:
+#             if cart_item.quantity > 1:
+#                 cart_item.quantity -= 1
+#                 cart_item.save()
+#                 product_quantity = cart_item.quantity
+#                 total_product_price = cart_item.total_product_price
+#             else:
+#                 cart_item.delete()
+#                 product_quantity = 0
+#                 total_product_price = 0
+
+#         elif action == 0:
+#             cart_item.delete()
+#             product_quantity = 0
+#             total_product_price = 0
+
+#         # Refresh cart after deletion or update
+#         cart_items = Cart.objects.filter(user=request.user)
+#         if cart_items.exists():
+#             for item in cart_items:
+#                 product_details = {
+#                     'id': item.product.id,
+#                     'title': item.product.title,
+#                     'quantity': item.quantity,
+#                     'regular_price': item.product.discounted_price,
+#                     'total_product_price': item.total_product_price,
+#                     'image': item.product.productimage_set.first().image.url
+#                 }
+#                 products_list.append(product_details)
+#         else:
+#             products_list.append('no-product')  # 💡 Immediately reflect empty cart
+
+#         sub_total = Cart.subtotal_product_price(user=request.user)
+
+#         return JsonResponse({
+#             "product_quantity": product_quantity,
+#             "total_product_price": total_product_price,
+#             "sub_total": sub_total,
+#             "carts_product": products_list,
+#         })
+
+#     return JsonResponse({'error': 'Invalid request'}, status=400)
 @login_required(login_url="user_login")
 @csrf_exempt
 def increase_cart(request):
-    products_list = []
-
     if request.method == "POST":
         data = json.loads(request.body)
         cart_id = int(data['id'])
@@ -234,59 +299,51 @@ def increase_cart(request):
         except Cart.DoesNotExist:
             return JsonResponse({'error': 'Cart item not found'}, status=404)
 
-        product_quantity = cart_item.quantity
-        total_product_price = cart_item.total_product_price
-
         # Handle actions
         if action == 1 and cart_item.quantity < 50:
             cart_item.quantity += 1
             cart_item.save()
-            product_quantity = cart_item.quantity
-            total_product_price = cart_item.total_product_price
-
         elif action == 2:
             if cart_item.quantity > 1:
                 cart_item.quantity -= 1
                 cart_item.save()
-                product_quantity = cart_item.quantity
-                total_product_price = cart_item.total_product_price
             else:
                 cart_item.delete()
-                product_quantity = 0
-                total_product_price = 0
-
         elif action == 0:
             cart_item.delete()
-            product_quantity = 0
-            total_product_price = 0
 
-        # Refresh cart after deletion or update
+        # 🧠 Now re-fetch all cart items
         cart_items = Cart.objects.filter(user=request.user)
-        if cart_items.exists():
-            for item in cart_items:
-                product_details = {
-                    'id': item.product.id,
-                    'title': item.product.title,
-                    'quantity': item.quantity,
-                    'regular_price': item.product.discounted_price,
-                    'total_product_price': item.total_product_price,
-                    'image': item.product.productimage_set.first().image.url
-                }
-                products_list.append(product_details)
-        else:
-            products_list.append('no-product')  # 💡 Immediately reflect empty cart
+
+        if not cart_items.exists():
+            return JsonResponse({
+                "product_quantity": 0,
+                "total_product_price": 0,
+                "sub_total": 0,
+                "carts_product": ['no-product']
+            })
+
+        products_list = []
+        for item in cart_items:
+            products_list.append({
+                'id': item.id,
+                'title': item.product.title,
+                'quantity': item.quantity,
+                'regular_price': item.product.discounted_price,
+                'total_product_price': item.total_product_price,
+                'image': item.product.productimage_set.first().image.url
+            })
 
         sub_total = Cart.subtotal_product_price(user=request.user)
 
         return JsonResponse({
-            "product_quantity": product_quantity,
-            "total_product_price": total_product_price,
+            "product_quantity": cart_items.get(id=cart_id).quantity if Cart.objects.filter(id=cart_id).exists() else 0,
+            "total_product_price": cart_items.get(id=cart_id).total_product_price if Cart.objects.filter(id=cart_id).exists() else 0,
             "sub_total": sub_total,
-            "carts_product": products_list,
+            "carts_product": products_list
         })
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
-
 
 @login_required(login_url="user_login")
 def check_out(request):
