@@ -196,6 +196,12 @@ SECRET_KEY = 'django-insecure-!bp990y8wp4pt^hm^5%$68jvn@9+@9^_z8(7e+2=lyob9fz!z%
 # Toggle this manually for prod/dev
 DEBUG = True
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://multivendor-ecommerce-j8lb.onrender.com",
+    "http://localhost:8000",
+]
+
+
 ALLOWED_HOSTS = ['*']  # Use specific domain(s) in production
 
 # Apps
