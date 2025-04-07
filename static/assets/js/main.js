@@ -556,11 +556,11 @@
 			max: 280,
 			values: [75, 300],
 			slide: function (event, ui) {
-				$("#amount").val("$" + ui.values[0] + " To $" + ui.values[1]);
+				$("#amount").val("₹" + ui.values[0] + " To $" + ui.values[1]);
 			}
 		});
-		$("#amount").val("$" + $("#slider-range").slider("values", 0) +
-			" To $" + $("#slider-range").slider("values", 1));
+		$("#amount").val("₹" + $("#slider-range").slider("values", 0) +
+			" To ₹" + $("#slider-range").slider("values", 1));
 	}
 
 	////////////////////////////////////////////////////
